@@ -1,5 +1,5 @@
 //Styles
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,6 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { grey } from '@material-ui/core/colors';
+import axios from "axios";
+
+import API from "../util/API";
 
 const useStyles = makeStyles({
   table: {
@@ -17,23 +20,26 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(name, email, state, age, phone) {
-  return { name, email, state, age, phone };
-}
 
-const rows = [
-  createData('Jake', 'ant@ant.com', 'Florida', 30, 8637821458),
-  createData('Kathy', 'ant@ant.com', 'Florida', 20, 58786793),
-  createData('Emma', 'ant@ant.com', 'Florida', 23, 8885538545),
-  createData('Mykull', 'ant@ant.com', 'Florida', 13, 56855714236),
-  createData('Funky', 'ant@ant.com', 'Florida', 35, 9764285194),
-];
 
 export default function BasicTable() {
   const classes = useStyles();
+  const [ items, setItems ] = useState("");
+  
+  const getData = () => {
+    axios.get("https://randomuser.me/api/")
+    .then((response) => {
+      console.log(response, "APppplepslpef");
+      console.log(response.data.results[0]);
+      setItems(response.data.results[0]);
+    })
+    //setItems(data);
+    //console.log(data);
+  }
 
   return (
     <TableContainer component={Paper}>
+      <button onClick={getData}>Get the damn data</button>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -45,17 +51,15 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
+        <TableRow key={items}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {items.name.first}
               </TableCell>
-              <TableCell align="right">{row.email}</TableCell>
-              <TableCell align="right">{row.state}</TableCell>
-              <TableCell align="right">{row.age}</TableCell>
-              <TableCell align="right">{row.phone}</TableCell>
+              <TableCell align="right">{items.email}</TableCell>
+              <TableCell align="right">{items.location.state}</TableCell>
+              <TableCell align="right">{items.dob.age}</TableCell>
+              <TableCell align="right">{items.cell}</TableCell>
             </TableRow>
-          ))}
         </TableBody>
       </Table>
     </TableContainer>
