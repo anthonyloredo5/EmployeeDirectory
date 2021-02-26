@@ -2,12 +2,12 @@ import React from "react";
 import { TextField, MuiThemeProvider } from "material-ui";
 
 
-const Search = () => {
 
+const Search = (props) => {
     return (
         <MuiThemeProvider class="search">
             <form class="search" noValidate autoComplete="off">
-                <TextField  class="search" id="outlined-basic" label="Outlined" variant="outlined" placeholder="search"/>
+                <TextField  onChange={props.handleState} class="search" id="outlined-basic" label="Outlined" variant="outlined" placeholder="search"/>
             </form>
         </MuiThemeProvider>
     );
